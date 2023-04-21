@@ -1,0 +1,16 @@
+
+#All changes to code to FACSvatar will be documented as 
+
+####Bachelor Thesis####
+         <changes>
+#######################
+
+1 . modules/process_bridge/smooth_data.py 
+        Info = Set intensity_multiplier values as 1, scaling shifted to other file
+        
+
+2. modules/input_facsfromcsv/main.py
+        Info = Introduced a global multiplier variable which is set from argument parser
+
+3. modules/gui/controller.py
+        Info = changed a line of code to get it working
