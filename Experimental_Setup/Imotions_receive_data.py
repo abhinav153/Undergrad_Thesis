@@ -9,7 +9,7 @@ class FACET:
 
     def open_connection(self):
 
-        UDP_IP = "134.102.205.35"
+        UDP_IP = "127.0.0.1"
         UDP_PORT = 8088
 
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)

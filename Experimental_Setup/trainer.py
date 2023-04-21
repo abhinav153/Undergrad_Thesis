@@ -48,6 +48,15 @@ def show_stimulus_frame(stimulus_playback):
     else:
         pass
 
+def show_facet_frame(facet_connection,AU):
+    AUs = facet_connection.extract_AU_data()
+    updated_img = update_data(AUs,graph,fig,AUs[AU.upper()])
+    cv2image = cv2.cvtColor(updated_img, cv2.COLOR_BGR2RGBA)
+    img = Image.fromarray(cv2image)
+    imgtk = ImageTk.PhotoImage(image=img,master=root,)
+    label_facet.imgtk = imgtk
+    label_facet.configure(image=imgtk)
+    return updated_img
 
 def change_stimulus_playback():
     global stimulus_playback
@@ -70,6 +79,9 @@ if __name__=='__main__':
     #webcam.set(cv2.CAP_PROP_FRAME_WIDTH, width)
     #webcam.set(cv2.CAP_PROP_FRAME_HEIGHT, height)
 
+    #open a facet connection
+    facet = FACET()
+    facet.open_connection()
 
     #setup the graph whose data will be updated
     fig = plt.figure()
@@ -114,11 +126,17 @@ if __name__=='__main__':
     label_stimulus = tk.Label(frame_stimulus)
     label_stimulus.grid()
 
+    #create a frame for showing FACET output
+    frame_facet = tk.Frame(root)
+    frame_facet.grid(row=1,column=1,padx=10,pady=10)
+    label_facet = tk.Label(frame_facet)
+    label_facet.grid()
+
     
     #create a frame for all buttons
     frame_buttons = tk.Frame(master=root)
     frame_buttons.grid(row=1,column=0,padx=10,pady=10)
-    record_button = tk.Button(frame_buttons, text='Record',fg="red",command=start_recording)
+    record_button = tk.Button(frame_buttons, text='Next',fg="red",command=start_recording)
     stimulus_playback = tk.Button(frame_buttons,text='Start/Stop stimulus',command = change_stimulus_playback)
     
     stimulus_playback.grid()
@@ -130,15 +148,13 @@ if __name__=='__main__':
     recording_call    = False
 
 
-    result = tk.messagebox.showinfo("Instructions",misc.Instructions)
+    result = tk.messagebox.showinfo("Instructions",misc.training_instructions)
 
     #get stimulus feed
     stimulus_files = get_stimuli_files()
     index = 0
     subject_no = str(get_existing_subjects() + 1)
 
-    baseline_frames = record_baseline(webcam,outlet)
-    save_baseline_frames('Experimental_setup/recordings/video_recordings/subject_'+subject_no,baseline_frames)
     while index < len(stimulus_files):
         stimulus_file = stimulus_files[index]
         stimulus = cv2.VideoCapture(str(stimulus_file)) 
@@ -149,23 +165,18 @@ if __name__=='__main__':
         while recording_call is not True:
             show_webcam_frame()
             show_stimulus_frame(stimulus_playback)
+                    
+            show_facet_frame(facet,AU)
             root.update()
             time.sleep(1/30)
 
+        index+=1
+
         root.withdraw()
-        #show recording loop
-        recording_frames = recording_prompt(webcam,outlet,AU,)
-
-        result = tk.messagebox.askretrycancel("Record", "Would you like to record again?")
-        if result:
-            continue
-        else:
-            save_recording_frames('Experimental_setup/recordings/video_recordings/subject_'+subject_no,AU,baseline_frames,recording_frames)
-            index+=1
-
         root.deiconify()
         recording_call = not recording_call
     
-    tk.messagebox.showinfo("Thank you","Thank you, the trial is over")
+    tk.messagebox.showinfo("Thank you","Thank you, the training is over")
 
-   
+
+    facet.close_connection()
