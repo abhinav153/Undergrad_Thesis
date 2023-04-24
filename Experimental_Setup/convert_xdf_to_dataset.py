@@ -3,21 +3,6 @@ import pyxdf
 import pandas as pd
 import numpy as np
 from statistics import mean
-def get_xdf_file(directory='Experimental_setup/recordings/xdf_recordings/'):
-    '''
-    Method to select file for conversion
-
-    Parameters:
-    Directory - Folder containing xdf_recordings
-    '''
-    xdf_files = glob.glob(directory+'*.xdf')
-    print('Choose your file for conversion')
-    for i,xdf_file in enumerate(xdf_files):
-        print(f'{i},{xdf_file}')
-    index = int(input('Index:'))
-    xdf_file_path = xdf_files[index]
-
-    return xdf_file_path
 
 def extract_data(xdf_file_path):
     '''
@@ -31,10 +16,10 @@ def extract_data(xdf_file_path):
                                         'Type':['Baseline' if i[1]==0 else 'Recording' for i in data[0]['time_series']],
                                         'AU':[i[2] for i in data[0]['time_series']],
                                         'Timestamps':data[0]['time_stamps']})
-        df_emg = pd.DataFrame(data={'Channel_Zygomaticus_Major':[i[1] for i in data[1]['time_series']],
-                                    'Channel_Levator_Labi':[i[2] for i in data[1]['time_series']],
-                                    'Channel_Orbicularis_Oculi':[i[3] for i in data[1]['time_series']],
-                                    'Channel_Corrugator_Supercili':[i[4] for i in data[1]['time_series']],                    
+        df_emg = pd.DataFrame(data={'Channel_Zygomaticus_Major':[i[3] for i in data[1]['time_series']],
+                                    'Channel_Levator_Labi':[i[1] for i in data[1]['time_series']],
+                                    'Channel_Orbicularis_Oculi':[i[0] for i in data[1]['time_series']],
+                                    'Channel_Corrugator_Supercili':[i[2] for i in data[1]['time_series']],                    
                                     'Timestamps': data[1]['time_stamps']})
         
     else:
@@ -44,10 +29,10 @@ def extract_data(xdf_file_path):
                                         'AU':[i[2] for i in data[1]['time_series']],
                                         'Timestamps':data[1]['time_stamps']})
         
-        df_emg = pd.DataFrame(data={'Channel_Zygomaticus_Major':[i[1] for i in data[0]['time_series']],
-                                    'Channel_Levator_Labi':[i[2] for i in data[0]['time_series']],
-                                    'Channel_Orbicularis_Oculi':[i[3] for i in data[0]['time_series']],
-                                    'Channel_Corrugator_Supercili':[i[4] for i in data[0]['time_series']],                     
+        df_emg = pd.DataFrame(data={'Channel_Zygomaticus_Major':[i[3] for i in data[0]['time_series']],
+                                    'Channel_Levator_Labi':[i[1] for i in data[0]['time_series']],
+                                    'Channel_Orbicularis_Oculi':[i[0] for i in data[0]['time_series']],
+                                    'Channel_Corrugator_Supercili':[i[2] for i in data[0]['time_series']],                     
                                     'Timestamps': data[0]['time_stamps']})
     
 
@@ -59,7 +44,7 @@ def extract_data(xdf_file_path):
    
     return df_recording,df_baseline,df_emg
 
-def extract_frame_mappings(df_recording,df_emg):
+def extract_frame_mappings(df_recording,df_emg,df_baseline):
     '''
     Method to map emg data per frame
     '''
@@ -151,12 +136,14 @@ def query_for_resolution(df_recording,df_emg,dataframes_dict):
     
 
 if __name__ == '__main__':
-
-    xdf_file_path = get_xdf_file()
-    df_recording,df_baseline,df_emg = extract_data(xdf_file_path)
-    dataframes_dict = extract_frame_mappings(df_recording,df_emg)
-    filename = xdf_file_path.split('\\')[-1].split('.')[0]
-    construct_dataset(dataframes_dict,filename)
+    directory='Experimental_setup/recordings/xdf_recordings/'
+    xdf_files = glob.glob(directory+'*.xdf')
+    for i,xdf_file in enumerate(xdf_files):
+        print(f' Processing:{xdf_file}')
+        df_recording,df_baseline,df_emg = extract_data(xdf_file)
+        dataframes_dict = extract_frame_mappings(df_recording,df_emg,df_baseline)
+        filename = xdf_file.split('\\')[-1].split('.')[0]
+        construct_dataset(dataframes_dict,filename)
     #res_rec,res_emg,c = query_for_resolution(df_recording,df_emg,dataframes_dict)
     #a = mean(res_rec)
     #b = mean(res_emg)

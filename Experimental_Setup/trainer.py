@@ -75,7 +75,7 @@ if __name__=='__main__':
     width, height = 800, 600
     
     #get a webcam feed
-    webcam = cv2.VideoCapture(1)
+    webcam = cv2.VideoCapture(0)
     #webcam.set(cv2.CAP_PROP_FRAME_WIDTH, width)
     #webcam.set(cv2.CAP_PROP_FRAME_HEIGHT, height)
 

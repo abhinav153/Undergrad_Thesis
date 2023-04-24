@@ -15,7 +15,7 @@ class Dataset:
         Method is for loading the dataset
         '''
         self.csv_data  = pd.read_csv(str(filepath))
-        self.sample_rate = 2000 #TODO change sample rate to actual sample rate during recording sessions
+        self.sample_rate = 2000 
         self.filename = filepath.parts[-1].split('.')[0]
 
 class Pipeline:
@@ -90,7 +90,7 @@ if __name__ == '__main__':
                 p.prepare_data_matrix(window_length,save=True)
         
 
-        #construct one unified dataset for specfic window lengths
+        #construct one unified dataset for specific window lengths
         for window_length in window_lengths:
             filepaths_raw = Path('Models/post_processed/'+str(window_length)+'/raw/').glob('*.csv')
             filepaths_filtered = Path('Models/post_processed/'+str(window_length)+'/filtered/').glob('*.csv')

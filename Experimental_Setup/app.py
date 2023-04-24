@@ -66,7 +66,7 @@ if __name__=='__main__':
     width, height = 800, 600
     
     #get a webcam feed
-    webcam = cv2.VideoCapture(1)
+    webcam = cv2.VideoCapture(0)
     #webcam.set(cv2.CAP_PROP_FRAME_WIDTH, width)
     #webcam.set(cv2.CAP_PROP_FRAME_HEIGHT, height)
 
@@ -138,7 +138,7 @@ if __name__=='__main__':
     subject_no = str(get_existing_subjects() + 1)
 
     baseline_frames = record_baseline(webcam,outlet)
-    save_baseline_frames('Experimental_setup/recordings/video_recordings/subject_'+subject_no,baseline_frames)
+    save_baseline_frames('Experimental_setup/recordings/video_recordings/trial_'+subject_no,baseline_frames)
     while index < len(stimulus_files):
         stimulus_file = stimulus_files[index]
         stimulus = cv2.VideoCapture(str(stimulus_file)) 
@@ -160,7 +160,7 @@ if __name__=='__main__':
         if result:
             continue
         else:
-            save_recording_frames('Experimental_setup/recordings/video_recordings/subject_'+subject_no,AU,baseline_frames,recording_frames)
+            save_recording_frames('Experimental_setup/recordings/video_recordings/trial_'+subject_no,AU,baseline_frames,recording_frames)
             index+=1
 
         root.deiconify()
