@@ -90,7 +90,6 @@ if __name__=='__main__':
                 channel_format= 'int32',
                 channel_count = 3,
                 source_id = 'myuid342',
-                nominal_srate=30
                 )
     
     outlet = StreamOutlet(info_vid)

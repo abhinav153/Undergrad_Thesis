@@ -20,7 +20,8 @@ def extract_data(xdf_file_path):
                                     'Channel_Levator_Labi':[i[1] for i in data[1]['time_series']],
                                     'Channel_Orbicularis_Oculi':[i[0] for i in data[1]['time_series']],
                                     'Channel_Corrugator_Supercili':[i[2] for i in data[1]['time_series']],                    
-                                    'Timestamps': data[1]['time_stamps']})
+                                    'Timestamps': data[1]['time_stamps'],
+                                    'Push Button':[i[4] for i in data[1]['time_series']]})
         
     else:
         print('case 2')
@@ -33,7 +34,8 @@ def extract_data(xdf_file_path):
                                     'Channel_Levator_Labi':[i[1] for i in data[0]['time_series']],
                                     'Channel_Orbicularis_Oculi':[i[0] for i in data[0]['time_series']],
                                     'Channel_Corrugator_Supercili':[i[2] for i in data[0]['time_series']],                     
-                                    'Timestamps': data[0]['time_stamps']})
+                                    'Timestamps': data[0]['time_stamps'],
+                                    'Push Button':[i[4] for i in data[0]['time_series']]})
     
 
     df_baseline = df_frames[(df_frames['Type'] == 'Baseline') & (df_frames['FrameNo']>0)]
