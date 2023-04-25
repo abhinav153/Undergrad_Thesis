@@ -1,8 +1,8 @@
 Experimental_Setup/recordings/video_recordings/
 Experimental_Setup/recordings/xdf_recordings/
 Experimental_Setup/dataset
-Models/post_processed/50
-Models/post_processed/100
-Models/post_processed/100
-Models/post_processed/150
-Models/post_processed/200
+Models/post_processed/50/**
+Models/post_processed/100/**
+Models/post_processed/100/**
+Models/post_processed/150/**
+Models/post_processed/200/**
