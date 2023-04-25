@@ -46,18 +46,22 @@ class Pipeline:
         }
         
     def prepare_data_matrix(self,window_length,save=False):
-        '''
-        If dyanamic mode is set to True, only the data with features is saved , and no data is saved
-        '''
 
         #for raw emg data
         X_with_features_raw,feature_labels = FeatureConstructor.construct_features(self.X,self.features,self.sample_rate,self.columns)
+
+        #check if nan data is present
+        print(np.isnan(X_with_features_raw).any())
+
+
         
         #for filtered emg signal
-        X_bp_filtered = Preprocess.band_pass_filter(self.X,lowcut=15,highcut=499,fs=self.sample_rate) #TODO change highcut to 500 once you know exact sampling rate
+        X_bp_filtered = Preprocess.band_pass_filter(self.X,lowcut=15,highcut=500,fs=self.sample_rate) 
         X_notch_filtered = Preprocess.notch_filter(X_bp_filtered,self.sample_rate)
         X_with_features_filtered,_ = FeatureConstructor.construct_features(X_notch_filtered,self.features,self.sample_rate,self.columns)
         #print(f'*************features shape- raw:{X_with_features_raw.shape},filtred:{X_with_features_filtered.shape}')
+
+        print(np.isnan(X_with_features_filtered).any())
 
 
         
@@ -77,7 +81,7 @@ class Pipeline:
 
     
 if __name__ == '__main__':
-        window_lengths = [50,100,150,200]
+        window_lengths = [50,100,150,200,250,300]
         
         directory = 'Experimental_Setup/dataset/pre-processed/'
         
