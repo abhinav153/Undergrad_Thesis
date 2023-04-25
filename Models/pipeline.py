@@ -49,19 +49,13 @@ class Pipeline:
 
         #for raw emg data
         X_with_features_raw,feature_labels = FeatureConstructor.construct_features(self.X,self.features,self.sample_rate,self.columns)
-
-        #check if nan data is present
-        print(np.isnan(X_with_features_raw).any())
-
-
-        
+   
         #for filtered emg signal
-        X_bp_filtered = Preprocess.band_pass_filter(self.X,lowcut=15,highcut=500,fs=self.sample_rate) 
+        X_bp_filtered = Preprocess.band_pass_filter(self.X,lowcut=5,highcut=500,fs=self.sample_rate) 
         X_notch_filtered = Preprocess.notch_filter(X_bp_filtered,self.sample_rate)
-        X_with_features_filtered,_ = FeatureConstructor.construct_features(X_notch_filtered,self.features,self.sample_rate,self.columns)
+        X_rectified      = Preprocess.full_wave_rectifier(X_notch_filtered)
+        X_with_features_filtered,_ = FeatureConstructor.construct_features(X_rectified,self.features,self.sample_rate,self.columns)
         #print(f'*************features shape- raw:{X_with_features_raw.shape},filtred:{X_with_features_filtered.shape}')
-
-        print(np.isnan(X_with_features_filtered).any())
 
 
         

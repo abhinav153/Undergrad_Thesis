@@ -123,7 +123,6 @@ class Preprocess:
         '''
         Carries out full wave rectification of the signal i.e takes absolute value of every sample
         '''
-        print(np.abs(timeseries))
         return np.abs(timeseries)
     
   
