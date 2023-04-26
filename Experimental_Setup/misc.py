@@ -12,7 +12,7 @@ Instructions = """  Please press Ok after you have read the Instructions
 
 1. Once you click on OK, you will be shown a white screen for about 3 seconds. During this interval you are expected to keep a neutral expression.
 
-2. After the white screen dissapears, the Experiment window will be shown \n The experiment window shows three things (i) Stimulus (ii)Webcam Feed 
+2. After the white screen dissapears, the Experiment window will be shown \n The experiment window shows two things (i) Stimulus (ii)Webcam Feed 
 
 3. You are expected to practice to do  the expression shown in the stimulus video with the help of the stimulus window. 
 
