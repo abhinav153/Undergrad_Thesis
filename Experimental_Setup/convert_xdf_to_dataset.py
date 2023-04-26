@@ -16,10 +16,10 @@ def extract_data(xdf_file_path):
                                         'Type':['Baseline' if i[1]==0 else 'Recording' for i in data[0]['time_series']],
                                         'AU':[i[2] for i in data[0]['time_series']],
                                         'Timestamps':data[0]['time_stamps']})
-        df_emg = pd.DataFrame(data={'Channel_Zygomaticus_Major':[i[3] for i in data[1]['time_series']],
-                                    'Channel_Levator_Labi':[i[1] for i in data[1]['time_series']],
-                                    'Channel_Orbicularis_Oculi':[i[0] for i in data[1]['time_series']],
-                                    'Channel_Corrugator_Supercili':[i[2] for i in data[1]['time_series']],                    
+        df_emg = pd.DataFrame(data={'Zygomaticus_Major':[i[3] for i in data[1]['time_series']],
+                                    'Levator_Labi':[i[1] for i in data[1]['time_series']],
+                                    'Orbicularis_Oculi':[i[0] for i in data[1]['time_series']],
+                                    'Corrugator_Supercili':[i[2] for i in data[1]['time_series']],                    
                                     'Timestamps': data[1]['time_stamps'],
                                     'Push Button':[i[4] for i in data[1]['time_series']]})
         
@@ -30,10 +30,10 @@ def extract_data(xdf_file_path):
                                         'AU':[i[2] for i in data[1]['time_series']],
                                         'Timestamps':data[1]['time_stamps']})
         
-        df_emg = pd.DataFrame(data={'Channel_Zygomaticus_Major':[i[3] for i in data[0]['time_series']],
-                                    'Channel_Levator_Labi':[i[1] for i in data[0]['time_series']],
-                                    'Channel_Orbicularis_Oculi':[i[0] for i in data[0]['time_series']],
-                                    'Channel_Corrugator_Supercili':[i[2] for i in data[0]['time_series']],                     
+        df_emg = pd.DataFrame(data={'Zygomaticus_Major':[i[3] for i in data[0]['time_series']],
+                                    'Levator_Labi':[i[1] for i in data[0]['time_series']],
+                                    'Orbicularis_Oculi':[i[0] for i in data[0]['time_series']],
+                                    'Corrugator_Supercili':[i[2] for i in data[0]['time_series']],                     
                                     'Timestamps': data[0]['time_stamps'],
                                     'Push Button':[i[4] for i in data[0]['time_series']]})
     

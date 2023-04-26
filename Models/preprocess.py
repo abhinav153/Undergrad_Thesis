@@ -52,10 +52,10 @@ class Preprocess:
         for AU,value in AU_DICT.items():
            
             
-            array = timeseries[timeseries['Label']==AU][['Channel_Zygomaticus_Major',
-                                                          'Channel_Levator_Labi',
-                                                          'Channel_Orbicularis_Oculi', 
-                                                          'Channel_Corrugator_Supercili']].to_numpy()
+            array = timeseries[timeseries['Label']==AU][['Zygomaticus_Major',
+                                                          'Levator_Labi',
+                                                          'Orbicularis_Oculi', 
+                                                          'Corrugator_Supercili']].to_numpy()
             no_of_segments = math.floor(array.shape[0]/no_of_samples_per_segment)
             #print(f'No of segments for {AU}:',no_of_segments)
             ranges[AU] = [total_rows,total_rows+no_of_segments]
