@@ -24,6 +24,8 @@ class ANN:
         scaler = MinMaxScaler()
         X = scaler.fit_transform(X)
 
+        #print(X.shape)
+
         #one hot encode the labels
         self.encoder = OneHotEncoder()
         self.y_unencoded = Y
@@ -35,13 +37,21 @@ class ANN:
             ('fc1', nn.Linear(self.X_train.shape[1], 60)),
             ('relu1', nn.ReLU()),
             ('dropout1',nn.Dropout(0.2)),
-            ('fc2', nn.Linear(60, 30)),
-            ('relu2', nn.ReLU()),
+            ('fc2', nn.Linear(60, 60)),
+            ('relu2', nn.LeakyReLU()),
             ('dropout2',nn.Dropout(0.2)),
-            ('fc3', nn.Linear(30, 10)),
+            ('fc3', nn.Linear(60, 60)),
             ('relu3', nn.ReLU()),
             ('dropout3',nn.Dropout(0.2)),
-            ('fc4', nn.Linear(10, len(self.categories))),
+            ('fc4', nn.Linear(60, 60)),
+            ('relu4', nn.ReLU()),
+            ('dropout4',nn.Dropout(0.2)),
+            ('fc5', nn.Linear(60, 30)),
+            ('relu5', nn.ReLU()),
+            ('dropout5',nn.Dropout(0.2)),
+            ('fc6', nn.Linear(30, 30)),
+            ('relu6', nn.ReLU()),
+            ('fc7', nn.Linear(30, len(self.categories))),
             ('softmax', nn.Softmax(dim=1))
         ]))
 
@@ -51,12 +61,17 @@ class ANN:
         self.y_train = torch.from_numpy(self.y_train).float()
         self.y_test  = torch.from_numpy(self.y_test).float()
 
+        #reshape arrays to 3dimensions
+        #self.X_train = torch.reshape(self.X_train,(self.X_train.shape[0],4,-1))
+        #self.X_train = torch.reshape(self.X_test,(self.X_test.shape[0],4,-1))
+
+
         #Model Paramters
-        self.learning_rate = 1e-2
-        self.batch_size = 64
+        self.learning_rate = 1e-1
+        self.batch_size = 500
         self.epochs = 100
         self.loss_fn = nn.CrossEntropyLoss()
-        self.optimizer = torch.optim.SGD(self.model.parameters(), lr=self.learning_rate)
+        self.optimizer = torch.optim.Adam(self.model.parameters(), lr=self.learning_rate)
 
         #move data to gpu if cuda available
         if torch.cuda.is_available:
