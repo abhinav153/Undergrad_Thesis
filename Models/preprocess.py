@@ -71,7 +71,7 @@ class Preprocess:
             Y[ranges[AU][0]:ranges[AU][1]] = int(AU.split('u')[1])
         
         
-        return X,Y
+        return X,Y,no_of_samples_per_segment
         
 
     

@@ -2,8 +2,8 @@ from sklearnex import patch_sklearn
 patch_sklearn()
 import pandas as pd
 import numpy as np
-from sklearn.model_selection import train_test_split,KFold,cross_val_score
-from sklearn.preprocessing import MinMaxScaler,OneHotEncoder
+from sklearn.model_selection import train_test_split,KFold,cross_val_score,RandomizedSearchCV,GridSearchCV
+from sklearn.preprocessing import MinMaxScaler,OneHotEncoder,StandardScaler
 import torch
 from torch import nn
 from collections import OrderedDict
@@ -16,13 +16,14 @@ from sklearn.ensemble import RandomForestClassifier
 
 class ANN:
    
-    def __init__(self,X,Y,name) -> None:
+    def __init__(self,X,Y,name,epochs=100,batch_size=64,lr=1e-2) -> None:
 
         self.name = name
 
-        #MinMax Scaling
-        scaler = MinMaxScaler()
-        X = scaler.fit_transform(X)
+        #Standardization Scaling
+        scalers = {}
+        scaler = StandardScaler()
+        X=scaler.fit_transform(X)
 
         #print(X.shape)
 
@@ -34,7 +35,7 @@ class ANN:
         self.y_test  = self.encoder.fit_transform(self.y_test_unencoded).toarray()
         self.categories = self.encoder.categories_[0]
         self.model = nn.Sequential(OrderedDict([
-            ('fc1', nn.Linear(self.X_train.shape[1], 60)),
+            ('fc1', nn.Linear(self.X_train.shape[1],60)),
             ('relu1', nn.ReLU()),
             ('dropout1',nn.Dropout(0.2)),
             ('fc2', nn.Linear(60, 60)),
@@ -67,9 +68,9 @@ class ANN:
 
 
         #Model Paramters
-        self.learning_rate = 1e-1
-        self.batch_size = 500
-        self.epochs = 100
+        self.learning_rate = lr
+        self.batch_size = batch_size
+        self.epochs = epochs
         self.loss_fn = nn.CrossEntropyLoss()
         self.optimizer = torch.optim.Adam(self.model.parameters(), lr=self.learning_rate)
 
@@ -86,37 +87,29 @@ class ANN:
         self.model.train()
 
         val_loss_tracker = {}
-        K_fold = KFold(5)
         
-        #K fold cross validation
-        for i,(train_index,val_index) in enumerate(K_fold.split(self.X_train,self.y_train)):
-            print(f"Fold {i+1}:")
-            curr_train_X = self.X_train[train_index]
-            curr_val_X   = self.X_train[val_index]
-            curr_train_y = self.y_train[train_index]
-            curr_val_y   = self.y_train[val_index]
+  
+        no_of_batches = self.X_train.shape[0]//self.batch_size
+        for epoch in range(self.epochs):
+            print('Current epoch:',epoch+1)
+            #creating batches of data
+            for mini_batch_no in range(no_of_batches+1):
+                X_batch = self.X_train[mini_batch_no*self.batch_size : (mini_batch_no+1)*self.batch_size,:]
+                y_batch = self.y_train[mini_batch_no*self.batch_size : (mini_batch_no+1)*self.batch_size]
+
+                #zero the gradients
+                self.optimizer.zero_grad()
+                output = self.model(X_batch)
+                loss = self.loss_fn(output,y_batch)
+
+                loss.backward()#calculate gradients
+                self.optimizer.step()#update weights
             
-            for epoch in range(self.epochs):
-                #print('Current epoch:',epoch+1)
-                #creating batches of data
-                no_of_batches = curr_train_X.shape[0]//self.batch_size
-                for mini_batch_no in range(no_of_batches+1):
-                    X_batch = curr_train_X[mini_batch_no*self.batch_size : (mini_batch_no+1)*self.batch_size,:]
-                    y_batch = curr_train_y[mini_batch_no*self.batch_size : (mini_batch_no+1)*self.batch_size]
-
-                    #zero the gradients
-                    self.optimizer.zero_grad()
-                    output = self.model(X_batch)
-                    loss = self.loss_fn(output,y_batch)
-
-                    loss.backward()#calculate gradients
-                    self.optimizer.step()#update weights
-                
-                val_output = self.model(curr_val_X)
-                val_loss   = self.loss_fn(val_output,curr_val_y)
-                
-                #track validation loss per epcoh
-                val_loss_tracker[f'Fold_{i+1}_Epoch_{epoch+1}'] = val_loss.item()
+            epoch_output = self.model(self.X_train)
+            epoch_loss   = self.loss_fn(epoch_output,self.y_train)
+            
+            #track loss per epoch
+            val_loss_tracker[f'Epoch_{epoch+1}'] = epoch_loss.item()
 
         self.model_trained = True
         
@@ -183,10 +176,26 @@ class RF:
         self.categories = np.unique(Y)
 
         #model parameters
-        self.model = RandomForestClassifier(20,max_depth=10)
+        self.model = RandomForestClassifier(max_depth=50,n_estimators=466,max_features='sqrt')
 
     
     def train(self):
+        '''
+        # Number of trees in random forest
+        n_estimators = [int(x) for x in np.linspace(start = 200, stop = 500, num = 10)]
+        # Number of features to consider at every split
+        max_features = [None, 'sqrt','log2']
+        # Maximum number of levels in tree
+        max_depth = [int(x) for x in np.linspace(10, 50, num = 2)]
+        grid = {'n_estimators': n_estimators,
+                    'max_features': max_features,
+                    'max_depth': max_depth,
+                  }
+        rf_random = RandomizedSearchCV(estimator = self.model, param_distributions = grid, random_state=42,cv = 2, verbose=2, n_jobs = -1,scoring='accuracy')
+        rf_random.fit(self.X_train,self.y_train.ravel())
+       
+        self.model = rf_random.best_estimator_
+        '''
         self.model.fit(self.X_train,self.y_train.ravel())
 
     def test(self):

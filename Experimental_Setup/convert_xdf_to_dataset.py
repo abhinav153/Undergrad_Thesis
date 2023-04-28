@@ -16,12 +16,12 @@ def extract_data(xdf_file_path):
                                         'Type':['Baseline' if i[1]==0 else 'Recording' for i in data[0]['time_series']],
                                         'AU':[i[2] for i in data[0]['time_series']],
                                         'Timestamps':data[0]['time_stamps']})
-        df_emg = pd.DataFrame(data={'Zygomaticus_Major':[i[3] for i in data[1]['time_series']],
-                                    'Levator_Labi':[i[1] for i in data[1]['time_series']],
-                                    'Orbicularis_Oculi':[i[0] for i in data[1]['time_series']],
-                                    'Corrugator_Supercili':[i[2] for i in data[1]['time_series']],                    
+        df_emg = pd.DataFrame(data={'Zygomaticus_Major':[i[4] for i in data[1]['time_series']],
+                                    'Levator_Labi':[i[2] for i in data[1]['time_series']],
+                                    'Orbicularis_Oculi':[i[1] for i in data[1]['time_series']],
+                                    'Corrugator_Supercili':[i[3] for i in data[1]['time_series']],                    
                                     'Timestamps': data[1]['time_stamps'],
-                                    'Push Button':[i[4] for i in data[1]['time_series']]})
+                                    'Push Button':[i[5] for i in data[1]['time_series']]})
         
     else:
         print('case 2')
@@ -30,12 +30,12 @@ def extract_data(xdf_file_path):
                                         'AU':[i[2] for i in data[1]['time_series']],
                                         'Timestamps':data[1]['time_stamps']})
         
-        df_emg = pd.DataFrame(data={'Zygomaticus_Major':[i[3] for i in data[0]['time_series']],
-                                    'Levator_Labi':[i[1] for i in data[0]['time_series']],
-                                    'Orbicularis_Oculi':[i[0] for i in data[0]['time_series']],
-                                    'Corrugator_Supercili':[i[2] for i in data[0]['time_series']],                     
+        df_emg = pd.DataFrame(data={'Zygomaticus_Major':[i[4] for i in data[0]['time_series']],
+                                    'Levator_Labi':[i[2] for i in data[0]['time_series']],
+                                    'Orbicularis_Oculi':[i[1] for i in data[0]['time_series']],
+                                    'Corrugator_Supercili':[i[3] for i in data[0]['time_series']],                     
                                     'Timestamps': data[0]['time_stamps'],
-                                    'Push Button':[i[4] for i in data[0]['time_series']]})
+                                    'Push Button':[i[5] for i in data[0]['time_series']]})
     
 
     df_baseline = df_frames[(df_frames['Type'] == 'Baseline') & (df_frames['FrameNo']>0)]
@@ -43,7 +43,7 @@ def extract_data(xdf_file_path):
     df_recording.index = [i for i in range(len(df_recording))]
     df_baseline.index = [i for i in range(len(df_baseline))]
 
-   
+    #print(df_emg.describe())
     return df_recording,df_baseline,df_emg
 
 def extract_frame_mappings(df_recording,df_emg,df_baseline):
@@ -83,7 +83,7 @@ def extract_frame_mappings(df_recording,df_emg,df_baseline):
         df = df_recording[df_recording['AU']==value]
         start_time = df.head(1)['Timestamps'].values[0]
         end_time   =  df.tail(1)['Timestamps'].values[0]
-        temp = df_emg[(df_emg['Timestamps'] >= start_time) & (df_emg['Timestamps']<=end_time)].drop(['Timestamps'],axis=1)
+        temp = df_emg[(df_emg['Timestamps'] >= start_time) & (df_emg['Timestamps']<=end_time)&(df_emg['Push Button']>0.9)].drop(['Timestamps'],axis=1)
     
         #subtracting baseline value from emg using brodcasting
         temp = temp.subtract(baseline)

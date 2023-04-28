@@ -24,7 +24,7 @@ class Pipeline:
         dataset = Dataset(filepath)
         self.sample_rate = dataset.sample_rate
         self.filename = dataset.filename 
-        self.X,self.Y = Preprocess.segmentation(dataset.csv_data,self.sample_rate,window_length)
+        self.X,self.Y,self.samples_per_segment = Preprocess.segmentation(dataset.csv_data,self.sample_rate,window_length)
         self.total_channels = self.X.shape[2]
         self.columns = dataset.csv_data.columns[:4]  
         self.features = {
@@ -65,6 +65,8 @@ class Pipeline:
         if save:
              df_raw_features.to_csv('Models/post_processed/'+str(window_length)+'./raw/'+self.filename+'_feature_matrix.csv',index=False)
              df_filtered_features.to_csv('Models/post_processed/'+str(window_length)+'./filtered/'+self.filename+'_feature_matrix.csv',index=False)
+             np.save('Models/post_processed/'+str(window_length)+'./raw/'+self.filename+'_only_segmented.npy',self.X)
+             np.save('Models/post_processed/'+str(window_length)+'./filtered/'+self.filename+'_only_segmented.npy',X_rectified)
              df_labels.to_csv('Models/post_processed/'+str(window_length)+'/'+self.filename+'_labels.csv',index=False)
 
         return X_with_features_raw,X_with_features_filtered,feature_labels
@@ -75,7 +77,8 @@ class Pipeline:
 
     
 if __name__ == '__main__':
-        window_lengths = [50,100,150,200,250,300,350]
+        window_lengths = [50,100,150,200,250,300,350,400]
+        samples_per_segment_dict = {}
         
         directory = 'Experimental_Setup/dataset/pre-processed/'
         
@@ -83,15 +86,18 @@ if __name__ == '__main__':
         for filepath in filepaths:
             print('Processing:',filepath)
             for window_length in window_lengths:
-                print('-------Generating features for segment length:',window_length)
+                print('-------Generating Data Matrices for segment length:',window_length)
                 p = Pipeline(filepath,window_length)
                 p.prepare_data_matrix(window_length,save=True)
+                samples_per_segment_dict[window_length] = p.samples_per_segment
         
 
         #construct one unified dataset for specific window lengths
         for window_length in window_lengths:
             filepaths_raw = Path('Models/post_processed/'+str(window_length)+'/raw/').glob('*.csv')
             filepaths_filtered = Path('Models/post_processed/'+str(window_length)+'/filtered/').glob('*.csv')
+            filepaths_raw_only_segmented = Path('Models/post_processed/'+str(window_length)+'/raw/').glob('*.npy')
+            filepaths_filtered_only_segmented = Path('Models/post_processed/'+str(window_length)+'/filtered/').glob('*.npy')
 
             X = np.empty((0,len(p.features.keys())*p.total_channels))
             Y = np.empty((0,1))
@@ -120,6 +126,25 @@ if __name__ == '__main__':
             #print('final filtered shape',X.shape,Y.shape)
             np.save('Models/post_processed/'+str(window_length)+'/X_filtered.npy',X)
             np.save('Models/post_processed/'+str(window_length)+'/Y_filtered.npy',Y)
+            
+            X = np.empty((0,samples_per_segment_dict[window_length],4))
+            for filepath in filepaths_raw_only_segmented:
+                 temp_X = np.load(filepath)
+                 X = np.concatenate((X,temp_X),axis=0)
+            X = np.reshape(X,(X.shape[0],4,-1))
+            np.save('Models/post_processed/'+str(window_length)+'/X_raw_only_segmented.npy',X)
+
+            X = np.empty((0,samples_per_segment_dict[window_length],4))
+            for filepath in filepaths_filtered_only_segmented:
+                 temp_X = np.load(filepath)
+                 X = np.concatenate((X,temp_X),axis=0)
+            X = np.reshape(X,(X.shape[0],4,-1))
+            np.save('Models/post_processed/'+str(window_length)+'/X_filtered_only_segmented.npy',X)
+                 
+
+                 
+
+
             
         
 
