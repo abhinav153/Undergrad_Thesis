@@ -1,6 +1,11 @@
 import numpy as np
 import pickle
 from model import RF
+import matplotlib.pyplot as plt
+import pandas as pd
+import seaborn as sns
+from sklearn.metrics import ConfusionMatrixDisplay,confusion_matrix,classification_report
+
 
 
 directory = 'Models/post_processed/'
@@ -85,6 +90,8 @@ print('Training Raw')
 rf_50_raw.train()
 print('Training Filtered')
 rf_50_filtered.train()
+rf_50_raw_test = rf_50_raw.test()
+rf_50_filtered_test = rf_50_filtered.test()
 
 
 
@@ -93,18 +100,24 @@ print('Training Raw')
 rf_100_raw.train()
 print('Training Filtered')
 rf_100_filtered.train()
+rf_100_raw_test = rf_100_raw.test()
+rf_100_filtered_test = rf_100_filtered.test()
 
 print(f"Now Training for window length:150 Raw & Filtered")
 print('Training Raw')
 rf_150_raw.train()
 print('Training Filtered')
 rf_150_filtered.train()
+rf_150_raw_test = rf_150_raw.test()
+rf_150_filtered_test = rf_150_filtered.test()
 
 print(f"Now Training for window length:200 Raw & Filtered")
 print('Training Raw')
 rf_200_raw.train()
 print('Training Filtered')
 rf_200_filtered.train()
+rf_200_raw_test = rf_200_raw.test()
+rf_200_filtered_test = rf_200_filtered.test()
 
 
 print(f"Now Training for window length:250 Raw & Filtered")
@@ -112,6 +125,8 @@ print('Training Raw')
 rf_250_raw.train()
 print('Training Filtered')
 rf_250_filtered.train()
+rf_250_raw_test = rf_250_raw.test()
+rf_250_filtered_test = rf_250_filtered.test()
 
 
 print(f"Now Training for window length:300 Raw & Filtered")
@@ -119,6 +134,8 @@ print('Training Raw')
 rf_300_raw.train()
 print('Training Filtered')
 rf_300_filtered.train()
+rf_300_raw_test = rf_300_raw.test()
+rf_300_filtered_test = rf_300_filtered.test()
 
 
 print(f"Now Training for window length:350 Raw & Filtered")
@@ -126,6 +143,8 @@ print('Training Raw')
 rf_350_raw.train()
 print('Training Filtered')
 rf_350_filtered.train()
+rf_350_raw_test = rf_350_raw.test()
+rf_350_filtered_test = rf_350_filtered.test()
 
 
 print(f"Now Training for window length:400 Raw & Filtered")
@@ -133,8 +152,56 @@ print('Training Raw')
 rf_400_raw.train()
 print('Training Filtered')
 rf_400_filtered.train()
+rf_400_raw_test = rf_400_raw.test()
+rf_400_filtered_test = rf_400_filtered.test()
 
 save_directory = 'Models/saved_models/'
+
+accuracy_dataframe = pd.DataFrame(data = {'Segment Length(ms)':[50,50,100,100,150,150,200,200,250,250,300,300,350,350,400,400]
+                                ,'Accuracy':[
+                                            rf_50_raw_test,
+                                            rf_50_filtered_test,
+                                            rf_100_raw_test,
+                                            rf_100_filtered_test,
+                                            rf_150_raw_test,
+                                            rf_150_filtered_test,
+                                            rf_200_raw_test,
+                                            rf_200_filtered_test,
+                                            rf_250_raw_test,
+                                            rf_250_filtered_test,
+                                            rf_300_raw_test,
+                                            rf_300_filtered_test,
+                                            rf_350_raw_test,
+                                            rf_350_filtered_test,
+                                            rf_400_raw_test,
+                                            rf_400_filtered_test,],
+                                        'Type':['Raw','Filtered',
+                                                'Raw','Filtered',
+                                                'Raw','Filtered',
+                                                'Raw','Filtered',
+                                                'Raw','Filtered',
+                                                'Raw','Filtered',
+                                                'Raw','Filtered',
+                                                'Raw','Filtered',
+          ]})
+
+print(accuracy_dataframe)
+accuracy_dataframe.to_csv('Resources/model_results/accuracy.csv',index=False)
+
+accuracy_plot=sns.barplot(x=accuracy_dataframe['Segment Length(ms)'],y=accuracy_dataframe['Accuracy'],hue=accuracy_dataframe['Type'],)
+sns.move_legend(accuracy_plot, "upper left", bbox_to_anchor=(1, 1))
+accuracy_plot.figure.savefig('Resources/model_results/accuracy_plot.png',bbox_inches='tight')
+
+def get_classification_report(X,y_true,model):
+    predictions = model.model.predict(X)
+    cr = classification_report(y_true,predictions,target_names=[int(i) for i in model.categories],output_dict=True)
+    return cr
+cr= get_classification_report(rf_400_raw.X_test,rf_400_raw.y_test,rf_400_raw)
+cr_dataframe = pd.DataFrame(cr).transpose()
+print(cr_dataframe.to_latex())
+cr_dataframe.to_csv('Resources/model_results/cr.csv',index=False)
+with open('Resources/model_results/cr_latex.txt','w') as tf:
+    tf.write(cr_dataframe.to_latex())
 
 #save models
 pickle.dump(rf_50_raw.model,open(save_directory+rf_50_raw.name+'.sav','wb'))

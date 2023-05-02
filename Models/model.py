@@ -201,9 +201,9 @@ class RF:
     def test(self):
         output = self.model.predict(self.X_test)
         test_accuracy = accuracy_score(self.y_test,output)
-        print(f'{self.name}  Test Accuracy:{test_accuracy.item()}')
+        print(f'{self.name}  Test Accuracy:{test_accuracy.item()*100}')
         
-        return test_accuracy.item()
+        return test_accuracy.item()*100
 
 
         

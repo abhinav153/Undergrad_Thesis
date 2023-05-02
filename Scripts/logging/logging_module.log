@@ -1,23 +1,23 @@
-2023-03-17 13:05:07,204:INFO:Current libzmq version is 4.3.4
-2023-03-17 13:05:07,204:INFO:Current  pyzmq version is 23.2.0
-2023-03-17 13:05:07,204:INFO:Publisher port is specified
-2023-03-17 13:05:07,205:INFO:Creating ZeroMQ context on: tcp://127.0.0.1:5570
-2023-03-17 13:05:07,214:INFO:Connect to tcp://127.0.0.1:5570 successful
-2023-03-17 13:05:07,215:INFO:Write timestamps to: logging\timestamps_pub.csv
-2023-03-17 13:05:07,216:INFO:Publisher socket set-up complete
-2023-03-17 13:05:07,216:INFO:sub_port not specified, not setting-up subscriber
-2023-03-17 13:05:07,216:INFO:Dealer port is specified
-2023-03-17 13:05:07,216:INFO:Creating ZeroMQ context on: tcp://127.0.0.1:5580
-2023-03-17 13:05:07,218:INFO:Connect to tcp://127.0.0.1:5580 successful
-2023-03-17 13:05:07,218:INFO:Dealer socket set-up complete
-2023-03-17 13:05:07,218:INFO:Dealer port 2 is specified
-2023-03-17 13:05:07,218:INFO:Creating ZeroMQ context on: tcp://127.0.0.1:5581
-2023-03-17 13:05:07,219:INFO:Connect to tcp://127.0.0.1:5581 successful
-2023-03-17 13:05:07,220:INFO:Dealer 2 socket set-up complete
-2023-03-17 13:05:07,220:INFO:Dealer port 3 is specified
-2023-03-17 13:05:07,220:INFO:Creating ZeroMQ context on: tcp://127.0.0.1:5582
-2023-03-17 13:05:07,221:INFO:Connect to tcp://127.0.0.1:5582 successful
-2023-03-17 13:05:07,222:INFO:Dealer 3 socket set-up complete
-2023-03-17 13:05:07,222:INFO:rout_port not specified, not setting-up router
-2023-03-17 13:05:07,222:INFO:ZeroMQ sockets successfully set-up
+2023-05-02 15:49:13,087:INFO:Current libzmq version is 4.3.4
+2023-05-02 15:49:13,087:INFO:Current  pyzmq version is 23.2.0
+2023-05-02 15:49:13,087:INFO:Publisher port is specified
+2023-05-02 15:49:13,087:INFO:Creating ZeroMQ context on: tcp://127.0.0.1:5570
+2023-05-02 15:49:13,091:INFO:Connect to tcp://127.0.0.1:5570 successful
+2023-05-02 15:49:13,091:INFO:Write timestamps to: logging\timestamps_pub.csv
+2023-05-02 15:49:13,092:INFO:Publisher socket set-up complete
+2023-05-02 15:49:13,092:INFO:sub_port not specified, not setting-up subscriber
+2023-05-02 15:49:13,092:INFO:Dealer port is specified
+2023-05-02 15:49:13,093:INFO:Creating ZeroMQ context on: tcp://127.0.0.1:5580
+2023-05-02 15:49:13,094:INFO:Connect to tcp://127.0.0.1:5580 successful
+2023-05-02 15:49:13,094:INFO:Dealer socket set-up complete
+2023-05-02 15:49:13,094:INFO:Dealer port 2 is specified
+2023-05-02 15:49:13,094:INFO:Creating ZeroMQ context on: tcp://127.0.0.1:5581
+2023-05-02 15:49:13,095:INFO:Connect to tcp://127.0.0.1:5581 successful
+2023-05-02 15:49:13,095:INFO:Dealer 2 socket set-up complete
+2023-05-02 15:49:13,095:INFO:Dealer port 3 is specified
+2023-05-02 15:49:13,095:INFO:Creating ZeroMQ context on: tcp://127.0.0.1:5582
+2023-05-02 15:49:13,096:INFO:Connect to tcp://127.0.0.1:5582 successful
+2023-05-02 15:49:13,096:INFO:Dealer 3 socket set-up complete
+2023-05-02 15:49:13,097:INFO:rout_port not specified, not setting-up router
+2023-05-02 15:49:13,097:INFO:ZeroMQ sockets successfully set-up
 

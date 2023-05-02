@@ -226,24 +226,24 @@ class TimeFreqDomain:
 class FeatureConstructor:
 
     @staticmethod
-    def construct_features(timseries,features_dict,sf,columns):
+    def construct_features(timeseries,features_dict,sf,columns):
         '''
         Constructs a feature matrix
 
         features:  Dictionary mapping feature names to corresponding methods
         '''
-        features = np.empty((timseries.shape[0],len(features_dict.keys()),timseries.shape[2]))
+        features = np.empty((timeseries.shape[0],len(features_dict.keys()),timeseries.shape[2]))
         i = 0
         for key,method in features_dict.items():
             if method == FrequencyDomain.FMD or method == FrequencyDomain.MMNF:
-                temp = method(timseries,sf)
+                temp = method(timeseries,sf)
             else:
-                temp = method(timseries)
+                temp = method(timeseries)
             features[:,i,:] = temp
             i+=1
 
         #Flatten out array with channels data
-        features = np.reshape(features,(timseries.shape[0],-1))
+        features = np.reshape(features,(timeseries.shape[0],-1))
         feature_labels = []
         for column in columns:
             for key in features_dict.keys():

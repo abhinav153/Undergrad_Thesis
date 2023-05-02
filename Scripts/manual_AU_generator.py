@@ -4,7 +4,9 @@ Script for generating Manual AUs which can be visualized in some softwares in re
 import matplotlib.pyplot as plt
 from matplotlib.widgets import Slider, Button
 import sys
-sys.path.append('C:\\Users\\Abhi\\Desktop\\acads\\5-2_Thesis\\repos\\Thesis_repos\\Bachelor_Thesis\\Scripts\\modules')
+sys.path.append(sys.path[0]+'\\modules')
+#sys.path.append('C:\\Users\\Abhi\\Desktop\\acads\\5-2_Thesis\\repos\\Thesis_repos\\Bachelor_Thesis\\Scripts\\modules')
+print(sys.path)
 from modules.gui.controller import Controller
 import numpy as np
 import matplotlib as mpl
