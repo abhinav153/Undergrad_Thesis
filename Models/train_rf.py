@@ -186,11 +186,11 @@ accuracy_dataframe = pd.DataFrame(data = {'Segment Length(ms)':[50,50,100,100,15
           ]})
 
 print(accuracy_dataframe)
-accuracy_dataframe.to_csv('Resources/model_results/accuracy.csv',index=False)
+accuracy_dataframe.to_csv('Resources/model_results/rf_accuracy.csv',index=False)
 
 accuracy_plot=sns.barplot(x=accuracy_dataframe['Segment Length(ms)'],y=accuracy_dataframe['Accuracy'],hue=accuracy_dataframe['Type'],)
 sns.move_legend(accuracy_plot, "upper left", bbox_to_anchor=(1, 1))
-accuracy_plot.figure.savefig('Resources/model_results/accuracy_plot.png',bbox_inches='tight')
+accuracy_plot.figure.savefig('Resources/model_results/rf_accuracy_plot.png',bbox_inches='tight')
 
 def get_classification_report(X,y_true,model):
     predictions = model.model.predict(X)
@@ -199,8 +199,8 @@ def get_classification_report(X,y_true,model):
 cr= get_classification_report(rf_400_raw.X_test,rf_400_raw.y_test,rf_400_raw)
 cr_dataframe = pd.DataFrame(cr).transpose()
 print(cr_dataframe.to_latex())
-cr_dataframe.to_csv('Resources/model_results/cr.csv',index=False)
-with open('Resources/model_results/cr_latex.txt','w') as tf:
+cr_dataframe.to_csv('Resources/model_results/rf_cr.csv',index=False)
+with open('Resources/model_results/rf_cr_latex.txt','w') as tf:
     tf.write(cr_dataframe.to_latex())
 
 feature_names = pickle.load(open('Models/post_processed/feature_labels.sav','rb'))
@@ -234,7 +234,7 @@ plt.figure()
 plt.barh(series.index,series.values)
 plt.xlabel('Mean Decrease in Gini Entropy')
 plt.ylabel('Feature Name')
-plt.gcf().savefig('Resources/model_results/mean_impurity.png',bbox_inches='tight')
+plt.gcf().savefig('Resources/model_results/rf_mean_impurity.png',bbox_inches='tight')
 
 freq_features={}
 for key in feature_names:
@@ -268,7 +268,7 @@ plt.figure()
 plt.barh(freq_series.index,freq_series.values)
 plt.xlabel('Frequency in top 5')
 plt.ylabel('Feature Name')
-plt.gcf().savefig('Resources/model_results/top5.png',bbox_inches='tight')
+plt.gcf().savefig('Resources/model_results/rf_top5.png',bbox_inches='tight')
 
 #save models
 pickle.dump(rf_50_raw.model,open(save_directory+rf_50_raw.name+'.sav','wb'))

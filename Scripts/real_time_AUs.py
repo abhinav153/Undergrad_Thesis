@@ -2,14 +2,32 @@ from pylsl import StreamInlet,resolve_stream
 import pickle
 import numpy as np
 import sys
+import cv2
 sys.path.append('.\\')
 sys.path.append(sys.path[0]+'\\modules')
 from Models.features import FeatureConstructor
 from Models.features import TimeDomain,FrequencyDomain
 from modules.gui.controller import Controller
+from sklearn.preprocessing import MinMaxScaler
+def showInMovedWindow(winname, img, x, y,text=-1):
+    '''
+    Method for generating windows to display the data/video
+    '''
+    cv2.namedWindow(winname)        # Create a named window
+    cv2.moveWindow(winname, x, y)   # Move it to (x,y)
+    img = cv2.resize(img,(800,500))
+    text = str(text)
+    print(text,'.....')
+    coordinates = (0,30)
+    font = cv2.FONT_HERSHEY_SIMPLEX
+    fontScale = 1
+    color = (0,0,255)
+    thickness = 1
+    img = cv2.putText(img, text, coordinates, font, fontScale, color, thickness, cv2.LINE_AA)
+    cv2.imshow(winname,img)
 
 #load your model
-model = pickle.load(open('Models/saved_models/RF_400_raw.sav','rb'))
+model = pickle.load(open('Models/saved_models/SVM_400_raw.sav','rb'))
 features = {
             'Integrated EMG'            : TimeDomain.IEMG,
             'Mean Absolute Value'       : TimeDomain.MAV,
@@ -45,6 +63,8 @@ streams = resolve_stream()
 inlet = StreamInlet(streams[0])
 print(inlet.info().type())
 
+capture = cv2.VideoCapture(0)
+
 
 # get a new sample (you can also omit the timestamp part if you're not
 # interested in it)
@@ -71,29 +91,47 @@ while True:
      'pose_Ry': 0, 
      'pose_Rz': 0}
     
+    _,frame = capture.read()
+
+    prediction_label = -1
+    key= cv2.waitKey(1)
+    if key == ord('q'):
+        break
+    
 
     sample, timestamp = inlet.pull_sample()
     if sample:
-        if len(buffer)<400:
+        if len(buffer)<800:
             buffer.append(sample[1:5])
         else:
             buffer.pop(0)
             buffer.append(sample[1:5])
             array = np.array(buffer)
+            scaler= MinMaxScaler()
+            array = scaler.fit_transform(array)
             array = np.expand_dims(array,axis=0)
+           
+            
             x_sample,labels=FeatureConstructor.construct_features(array,features,2000,['a','b','c','d'])
-            prediction_prob = model.predict_proba(x_sample)
-            prediction_label = model.predict(x_sample)
-            print(prediction_prob)
+            try:
+                prediction_label = model.predict(x_sample)
+                if prediction_label <10:
+                    AUs[f'AU{int(prediction_label):02d}'] = 1 
+                else:
+                    AUs[f'AU{int(prediction_label)}'] = 1 
+
+                #print(AUs)
+                controller.face_configuration(AUs)
+            except:
+                print('Some error occured')
+                continue
+            #print(prediction_prob)
             print(prediction_label)
-            print(model.classes_)
-            if prediction_label <10:
-                AUs[f'AU{int(prediction_label):02d}'] = 1 
-            else:
-                AUs[f'AU{int(prediction_label)}'] = 1 
+            #print(model.classes_)
+            
+    showInMovedWindow('frame',frame,100,100,prediction_label)
 
-            #print(AUs)
-            controller.face_configuration(AUs)
-
+cv2.destroyAllWindows()
+capture.close()
 
         

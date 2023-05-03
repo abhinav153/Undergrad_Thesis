@@ -86,7 +86,7 @@ def extract_frame_mappings(df_recording,df_emg,df_baseline):
         temp = df_emg[(df_emg['Timestamps'] >= start_time) & (df_emg['Timestamps']<=end_time)&(df_emg['Push Button']>0.9)].drop(['Timestamps'],axis=1)
     
         #subtracting baseline value from emg using brodcasting
-        temp = temp.subtract(baseline)
+        #temp = temp.subtract(baseline)
 
         #Do segmenting of data
     
