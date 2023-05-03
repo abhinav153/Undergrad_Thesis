@@ -88,8 +88,9 @@ if __name__ == '__main__':
             for window_length in window_lengths:
                 print('-------Generating Data Matrices for segment length:',window_length)
                 p = Pipeline(filepath,window_length)
-                p.prepare_data_matrix(window_length,save=True)
+                _,_,feature_labels=p.prepare_data_matrix(window_length,save=True)
                 samples_per_segment_dict[window_length] = p.samples_per_segment
+        pickle.dump(feature_labels,open('Models/post_processed/feature_labels'+'.sav','wb'))
         
 
         #construct one unified dataset for specific window lengths

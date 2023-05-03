@@ -203,6 +203,73 @@ cr_dataframe.to_csv('Resources/model_results/cr.csv',index=False)
 with open('Resources/model_results/cr_latex.txt','w') as tf:
     tf.write(cr_dataframe.to_latex())
 
+feature_names = pickle.load(open('Models/post_processed/feature_labels.sav','rb'))
+importances_50_raw = rf_50_raw.model.feature_importances_
+importances_50_filtered = rf_50_filtered.model.feature_importances_
+importances_100_raw = rf_100_raw.model.feature_importances_
+importances_100_filtered = rf_100_filtered.model.feature_importances_
+importances_150_raw = rf_150_raw.model.feature_importances_
+importances_150_filtered = rf_150_filtered.model.feature_importances_
+importances_200_raw = rf_200_raw.model.feature_importances_
+importances_200_filtered = rf_200_filtered.model.feature_importances_
+importances_250_raw = rf_250_raw.model.feature_importances_
+importances_250_filtered = rf_250_filtered.model.feature_importances_
+importances_300_raw = rf_300_raw.model.feature_importances_
+importances_300_filtered = rf_300_filtered.model.feature_importances_
+importances_350_raw = rf_350_raw.model.feature_importances_
+importances_350_filtered = rf_350_filtered.model.feature_importances_
+importances_400_raw = rf_400_raw.model.feature_importances_
+importances_400_filtered = rf_400_filtered.model.feature_importances_
+avg_impurity_decrease = (importances_50_raw + importances_50_filtered + 
+                         importances_100_raw + importances_100_filtered +
+                         importances_150_raw + importances_150_filtered +
+                         importances_200_raw + importances_200_filtered +
+                         importances_250_raw + importances_250_filtered +
+                         importances_300_raw + importances_300_filtered +
+                         importances_350_raw + importances_350_filtered +
+                         importances_400_raw + importances_400_filtered )/16
+series = pd.Series(avg_impurity_decrease,feature_names)
+series = series.sort_values(ascending=False)[:10]
+plt.figure()
+plt.barh(series.index,series.values)
+plt.xlabel('Mean Decrease in Gini Entropy')
+plt.ylabel('Feature Name')
+plt.gcf().savefig('Resources/model_results/mean_impurity.png',bbox_inches='tight')
+
+freq_features={}
+for key in feature_names:
+    freq_features[key] = 0
+
+def top_5_features(importances,feature_names):
+    series=pd.Series(importances,feature_names)
+    series=series.sort_values(ascending=False)[:5]
+    top_5= series.index
+    for feature in top_5:
+        freq_features[feature]+=1
+top_5_features(importances_50_raw,feature_names)
+top_5_features(importances_50_filtered,feature_names)
+top_5_features(importances_100_raw,feature_names)
+top_5_features(importances_100_filtered,feature_names)
+top_5_features(importances_150_raw,feature_names)
+top_5_features(importances_150_filtered,feature_names)
+top_5_features(importances_200_raw,feature_names)
+top_5_features(importances_200_filtered,feature_names)
+top_5_features(importances_250_raw,feature_names)
+top_5_features(importances_250_filtered,feature_names)
+top_5_features(importances_300_raw,feature_names)
+top_5_features(importances_300_filtered,feature_names)
+top_5_features(importances_350_raw,feature_names)
+top_5_features(importances_350_filtered,feature_names)
+top_5_features(importances_400_raw,feature_names)
+top_5_features(importances_400_filtered,feature_names)
+freq_series = pd.Series(freq_features)
+freq_series = freq_series.sort_values(ascending=False)[:10]
+plt.figure()
+plt.barh(freq_series.index,freq_series.values)
+plt.xlabel('Frequency in top 5')
+plt.ylabel('Feature Name')
+plt.gcf().savefig('Resources/model_results/top5.png',bbox_inches='tight')
+
 #save models
 pickle.dump(rf_50_raw.model,open(save_directory+rf_50_raw.name+'.sav','wb'))
 pickle.dump(rf_50_filtered.model,open(save_directory+rf_50_raw.name+'.sav','wb'))
