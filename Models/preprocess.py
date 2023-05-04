@@ -7,6 +7,19 @@ from  scipy.fft import fft,rfftfreq
 from scipy.signal import butter,lfilter,iirnotch,freqz,filtfilt
 class Preprocess:
 
+    @staticmethod
+    def segmentation_only_ts(timeseries,sampling_freq,window_size):
+        no_of_samples_per_segment = math.ceil(window_size * sampling_freq/1000)
+        #print('No of samples per segment is ',no_of_samples_per_segment)
+        no_of_segments = math.floor(timeseries.shape[0]/no_of_samples_per_segment)
+        array = np.empty((no_of_segments,no_of_samples_per_segment,timeseries.shape[1]))
+        for segment in range(no_of_segments):
+               array[segment] = timeseries[segment*no_of_samples_per_segment:(segment+1)*no_of_samples_per_segment,:]
+
+        return array
+        
+
+
 
     @staticmethod 
     def segmentation(timeseries,sampling_freq,window_size):
@@ -22,6 +35,7 @@ class Preprocess:
 
         no_of_samples_per_segment = math.ceil(window_size * sampling_freq/1000)
         #print('No of samples per segment is ',no_of_samples_per_segment)
+        no_of_segments = math.floor(array.shape[0]/no_of_samples_per_segment)
         
         
         
