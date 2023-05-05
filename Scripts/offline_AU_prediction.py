@@ -6,10 +6,18 @@ from Models.preprocess import Preprocess
 from Models.features import FeatureConstructor,TimeDomain,FrequencyDomain
 import pickle
 from pathlib import Path
+from copy import deepcopy
+import numpy as np
+from sklearn.metrics import confusion_matrix,ConfusionMatrixDisplay,classification_report
+import matplotlib.pyplot as plt
+
 xdf_file_path = 'Scripts\offline_recordings\AU1.xdf'
 xdf_file_paths = Path( 'Scripts\\offline_recordings\\').glob('*.xdf')
 #load your model
 model = pickle.load(open('Models/saved_models/RF_400_raw.sav','rb'))
+
+y_predicted = np.empty((0))
+y_true      = np.empty((0))
 
 for xdf_file_path in xdf_file_paths:
     print(f'.....processing:{xdf_file_path}')
@@ -68,4 +76,26 @@ for xdf_file_path in xdf_file_paths:
                                         'AU26':predictions[:,17],
                                         'AU43':predictions[:,18],
                                         'Predicted Label':pred_label})
-    print(pred_dataframe[['Predicted Label',xdf_file_path.parts[-1].split('.')[0]]])
+    #print(pred_dataframe[['Predicted Label',xdf_file_path.parts[-1].split('.')[0]]])
+    actual_label = deepcopy(pred_label)
+    actual_label[:] = float(xdf_file_path.parts[-1].split('.')[0].split('U')[-1])
+    y_true = np.concatenate([y_true,actual_label],axis=0)
+    y_predicted = np.concatenate([y_predicted,pred_label],axis=0)
+
+cm = confusion_matrix(y_true,y_predicted,)
+display=ConfusionMatrixDisplay(cm,display_labels=[int(i) for i in model.classes_])
+display.plot()
+plt.gcf().savefig('Resources/model_results/confusion_matrix.png')
+
+plt.figure()
+cr = classification_report(y_true,y_predicted,target_names=[int(i) for i in model.classes_],output_dict=True)
+cr_dataframe = pd.DataFrame(cr).transpose()
+print(cr_dataframe.to_latex())
+cr_dataframe.to_csv('Resources/model_results/cr.csv',index=False)
+with open('Resources/model_results/cr_latex.txt','w') as tf:
+    tf.write(cr_dataframe.to_latex())
+
+
+
+
+   

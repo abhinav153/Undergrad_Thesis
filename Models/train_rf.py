@@ -192,16 +192,7 @@ accuracy_plot=sns.barplot(x=accuracy_dataframe['Segment Length(ms)'],y=accuracy_
 sns.move_legend(accuracy_plot, "upper left", bbox_to_anchor=(1, 1))
 accuracy_plot.figure.savefig('Resources/model_results/rf_accuracy_plot.png',bbox_inches='tight')
 
-def get_classification_report(X,y_true,model):
-    predictions = model.model.predict(X)
-    cr = classification_report(y_true,predictions,target_names=[int(i) for i in model.categories],output_dict=True)
-    return cr
-cr= get_classification_report(rf_400_raw.X_test,rf_400_raw.y_test,rf_400_raw)
-cr_dataframe = pd.DataFrame(cr).transpose()
-print(cr_dataframe.to_latex())
-cr_dataframe.to_csv('Resources/model_results/rf_cr.csv',index=False)
-with open('Resources/model_results/rf_cr_latex.txt','w') as tf:
-    tf.write(cr_dataframe.to_latex())
+
 
 feature_names = pickle.load(open('Models/post_processed/feature_labels.sav','rb'))
 importances_50_raw = rf_50_raw.model.feature_importances_
