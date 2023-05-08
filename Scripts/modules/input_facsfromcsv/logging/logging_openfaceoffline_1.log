@@ -1,0 +1,15 @@
+2023-03-22 14:41:45,736:INFO:Current libzmq version is 4.3.4
+2023-03-22 14:41:45,736:INFO:Current  pyzmq version is 23.2.0
+2023-03-22 14:41:45,736:INFO:Publisher port is specified
+2023-03-22 14:41:45,736:INFO:Creating ZeroMQ context on: tcp://127.0.0.1:5570
+2023-03-22 14:41:45,742:INFO:Connect to tcp://127.0.0.1:5570 successful
+2023-03-22 14:41:45,743:INFO:Write timestamps to: logging\timestamps_pub.csv
+2023-03-22 14:41:45,744:INFO:Publisher socket set-up complete
+2023-03-22 14:41:45,744:INFO:sub_port not specified, not setting-up subscriber
+2023-03-22 14:41:45,744:INFO:deal_port not specified, not setting-up dealer
+2023-03-22 14:41:45,744:INFO:deal2_port not specified, not setting-up dealer
+2023-03-22 14:41:45,744:INFO:deal3_port not specified, not setting-up dealer
+2023-03-22 14:41:45,744:INFO:rout_port not specified, not setting-up router
+2023-03-22 14:41:45,744:INFO:ZeroMQ sockets successfully set-up
+
+2023-03-22 15:16:49,490:INFO:PUB: Data finished

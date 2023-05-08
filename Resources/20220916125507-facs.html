@@ -1,0 +1,738 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2023-02-06 Mon 10:02 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>FACS</title>
+<meta name="author" content="Marcel Steinbeck" />
+<meta name="generator" content="Org Mode" />
+<style>
+  #content { max-width: 60em; margin: auto; }
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #e6e6e6;
+    border-radius: 3px;
+    background-color: #f2f2f2;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: auto;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    top: -8px;
+    right: 12px;
+    padding: 3px;
+    color: #555;
+    background-color: #f2f2f299;
+  }
+  pre.src:hover:before { display: inline; margin-top: 14px;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-authinfo::before { content: 'Authinfo'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .equation-container {
+    display: table;
+    text-align: center;
+    width: 100%;
+  }
+  .equation {
+    vertical-align: middle;
+  }
+  .equation-label {
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+  }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { }
+</style>
+</head>
+<body>
+<div id="content" class="content">
+<h1 class="title">FACS</h1>
+<div id="table-of-contents" role="doc-toc">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#org6ebe621">1. Does Unity support FACS?</a></li>
+<li><a href="#orgf86a5d5">2. Tools</a>
+<ul>
+<li><a href="#org089ba7b">2.1. OpenFace</a></li>
+<li><a href="#orga38dbae">2.2. OpenSMILE</a></li>
+<li><a href="#org34f9b34">2.3. MakeHuman</a></li>
+<li><a href="#org6af4d80">2.4. Lab Streaming Layer</a></li>
+</ul>
+</li>
+<li><a href="#org587089d">3. Publications</a>
+<ul>
+<li><a href="#org0d669d7">3.1. Action Unit Models of Facial Expression of Emotion in the Presence of Speech</a></li>
+<li><a href="#org55f29fe">3.2. Improving Speech Related Facial Action Unit Recognition by Audiovisual Information Fusion</a></li>
+<li><a href="#orgd58d4ca">3.3. Face reading from speech—predicting facial action units from audio cues</a></li>
+<li><a href="#org417830c">3.4. FACSvatar</a></li>
+<li><a href="#orgf79422f">3.5. FACSHuman</a></li>
+<li><a href="#orgc10c3de">3.6. The computer expression recognition toolbox (CERT)</a></li>
+<li><a href="#org84db2ad">3.7. Opensmile: the munich versatile and fast open-source audio feature extractor</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<p>
+The Facial Action Coding System (FACS) is a system to taxonomize human
+facial movements by their appearance on the face, based on a system
+originally developed by a Swedish anatomist named Carl-Herman
+Hjortsjö.
+</p>
+
+<p>
+Examples given by <a href="#org089ba7b">OpenFace</a>:
+<a href="https://github.com/TadasBaltrusaitis/OpenFace/wiki/Action-Units">https://github.com/TadasBaltrusaitis/OpenFace/wiki/Action-Units</a>
+</p>
+
+<p>
+References:
+</p>
+<ul class="org-ul">
+<li><a href="https://imotions.com/blog/facial-action-coding-system/">https://imotions.com/blog/facial-action-coding-system/</a></li>
+<li><a href="https://link.springer.com/article/10.3758/s13428-021-01761-9">https://link.springer.com/article/10.3758/s13428-021-01761-9</a></li>
+<li><a href="https://link.springer.com/article/10.3758/s13428-021-01761-9">https://link.springer.com/article/10.3758/s13428-021-01761-9</a></li>
+<li><a href="https://www.frontiersin.org/articles/10.3389/frvir.2021.619811/full">https://www.frontiersin.org/articles/10.3389/frvir.2021.619811/full</a></li>
+</ul>
+
+<div id="outline-container-org6ebe621" class="outline-2">
+<h2 id="org6ebe621"><span class="section-number-2">1.</span> Does Unity support FACS?</h2>
+<div class="outline-text-2" id="text-1">
+<ul class="org-ul">
+<li><a href="#org417830c">FACSvatar</a> looks like a good option.</li>
+<li><a href="https://forum.unity.com/threads/makehuman-and-unity.617311/">This post</a> post describes how to import <a href="#org34f9b34">MakeHuman</a> models into Unity.</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgf86a5d5" class="outline-2">
+<h2 id="orgf86a5d5"><span class="section-number-2">2.</span> Tools</h2>
+<div class="outline-text-2" id="text-2">
+</div>
+<div id="outline-container-org089ba7b" class="outline-3">
+<h3 id="org089ba7b"><span class="section-number-3">2.1.</span> OpenFace</h3>
+<div class="outline-text-3" id="text-2-1">
+<p>
+Over the past few years, there has been an increased interest in
+automatic facial behavior analysis and understanding. We present
+OpenFace – a tool intended for computer vision and machine learning
+researchers, affective computing community and people interested in
+building interactive applications based on facial behavior
+analysis. OpenFace is the ﬁrst toolkit capable of facial landmark
+detection, head pose estimation, facial action unit recognition, and
+eye-gaze estimation with available source code for both running and
+training the models. The computer vision algorithms which represent
+the core of OpenFace demonstrate state-of-the-art results in all of
+the above mentioned tasks. Furthermore, our tool is capable of
+real-time performance and is able to run from a simple webcam without
+any specialist hardware.
+</p>
+
+<p>
+Git repository: <a href="https://github.com/TadasBaltrusaitis/OpenFace">https://github.com/TadasBaltrusaitis/OpenFace</a>
+</p>
+</div>
+</div>
+
+<div id="outline-container-orga38dbae" class="outline-3">
+<h3 id="orga38dbae"><span class="section-number-3">2.2.</span> OpenSMILE</h3>
+<div class="outline-text-3" id="text-2-2">
+<p>
+openSMILE (open-source Speech and Music Interpretation by Large-space
+Extraction) is an open-source toolkit for audio feature extraction and
+classification of speech and music signals. openSMILE is widely
+applied in automatic emotion recognition for affective computing.
+</p>
+
+<p>
+Git repository: <a href="https://github.com/audeering/opensmile">https://github.com/audeering/opensmile</a>
+</p>
+
+<p>
+Publications:
+</p>
+<ul class="org-ul">
+<li><a href="#org84db2ad">Opensmile: the munich versatile and fast open-source audio feature extractor</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-org34f9b34" class="outline-3">
+<h3 id="org34f9b34"><span class="section-number-3">2.3.</span> MakeHuman</h3>
+<div class="outline-text-3" id="text-2-3">
+<p>
+MakeHuman is a free and open source 3D computer graphics middleware
+designed for the prototyping of photorealistic humanoids. It is
+developed by a community of programmers, artists, and academics
+interested in 3D character modeling.
+</p>
+
+<p>
+Git repository: <a href="https://github.com/makehumancommunity/makehuman">https://github.com/makehumancommunity/makehuman</a>
+</p>
+</div>
+</div>
+
+<div id="outline-container-org6af4d80" class="outline-3">
+<h3 id="org6af4d80"><span class="section-number-3">2.4.</span> Lab Streaming Layer</h3>
+<div class="outline-text-3" id="text-2-4">
+<p>
+<a href="https://github.com/sccn/labstreaminglayer">https://github.com/sccn/labstreaminglayer</a>
+</p>
+
+<p>
+There is also a Unity package:
+<a href="https://github.com/labstreaminglayer/LSL4Unity/tree/a3096a95c8de3bcfb2ff2216e7607ed1b2efd642">https://github.com/labstreaminglayer/LSL4Unity/tree/a3096a95c8de3bcfb2ff2216e7607ed1b2efd642</a>
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org587089d" class="outline-2">
+<h2 id="org587089d"><span class="section-number-2">3.</span> Publications</h2>
+<div class="outline-text-2" id="text-3">
+</div>
+<div id="outline-container-org0d669d7" class="outline-3">
+<h3 id="org0d669d7"><span class="section-number-3">3.1.</span> Action Unit Models of Facial Expression of Emotion in the Presence of Speech</h3>
+<div class="outline-text-3" id="text-3-1">
+<p>
+Audio-Based Classification:
+</p>
+
+<blockquote>
+<p>
+For the audio based classification, we also train a linear SVM using
+ℓ-2 regularization and ℓ-2 loss classifier using the audio from the
+talking data set.
+</p>
+
+<p>
+We use the <a href="#orga38dbae">OpenSMILE</a> feature extraction library [<a href="#org84db2ad">Opensmile: the munich
+versatile and fast open-source audio feature extractor</a>] to obtain a
+comprehensive set of standard acoustic features to characterize each
+utterance. The openSMILE library extracts 26 low-level descriptors
+including intensity, loudness, F0, F0 envelope, probability of
+voicing, zero-crossing rate, 12 MFCCs, and 8 LSFs. We also use the
+first order delta coefficients for these features, as well as 19
+summary functions for a total of 988 features.
+</p>
+</blockquote>
+
+<p>
+Video-Based Classification:
+</p>
+
+<blockquote>
+<p>
+We use Action Units (AUs) as features for the face classifier. We
+extract AUs using CERT [<a href="#orgc10c3de">The computer expression recognition toolbox
+(CERT)</a>].
+</p>
+</blockquote>
+
+<div class="org-src-container">
+<pre class="src src-bibtex"><span style="color: #5cEfFF;">@INPROCEEDINGS</span>{<span style="color: #a991f1;">Shah:HACACII:2013</span>,
+  <span style="color: #dcafe9;">author</span> =       {Shah, Miraj and Cooper, David G. and Cao, Houwei and
+                  Gur, Ruben C. and Nenkova, Ani and Verma, Ragini},
+  <span style="color: #dcafe9;">booktitle</span> =    {2013 Humaine Association Conference on Affective
+                  Computing and Intelligent Interaction},
+  <span style="color: #dcafe9;">title</span> =        {Action Unit Models of Facial Expression of Emotion
+                  in the Presence of Speech},
+  <span style="color: #dcafe9;">year</span> =         {2013},
+  <span style="color: #dcafe9;">volume</span> =       {},
+  <span style="color: #dcafe9;">number</span> =       {},
+  <span style="color: #dcafe9;">pages</span> =        {49-54},
+  <span style="color: #dcafe9;">abstract</span> =     {Automatic recognition of emotion using facial
+                  expressions in the presence of speech poses a unique
+                  challenge because talking reveals clues for the
+                  affective state of the speaker but distorts the
+                  canonical expression of emotion on the face. We
+                  introduce a corpus of acted emotion expression where
+                  speech is either present (talking) or absent
+                  (silent). The corpus is uniquely suited for analysis
+                  of the interplay between the two conditions. We use
+                  a multimodal decision level fusion classifier to
+                  combine models of emotion from talking and silent
+                  faces as well as from audio to recognize five basic
+                  emotions: anger, disgust, fear, happy and sad. Our
+                  results strongly indicate that emotion prediction in
+                  the presence of speech from action unit facial
+                  features is less accurate when the person is
+                  talking. Modeling talking and silent expressions
+                  separately and fusing the two models greatly
+                  improves accuracy of prediction in the talking
+                  setting. The advantages are most pronounced when
+                  silent and talking face models are fused with
+                  predictions from audio features. In this multi-modal
+                  prediction both the combination of modalities and
+                  the separate models of talking and silent facial
+                  expression of emotion contribute to the
+                  improvement.},
+  <span style="color: #dcafe9;">keywords</span> =     {},
+  <span style="color: #dcafe9;">doi</span> =          {<span style="color: #51afef; font-weight: bold; text-decoration: underline;">10.1109/ACII.2013.15</span>},
+  <span style="color: #dcafe9;">ISSN</span> =         {2156-8111},
+  <span style="color: #dcafe9;">month</span> =        {Sep.},
+}
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org55f29fe" class="outline-3">
+<h3 id="org55f29fe"><span class="section-number-3">3.2.</span> Improving Speech Related Facial Action Unit Recognition by Audiovisual Information Fusion</h3>
+<div class="outline-text-3" id="text-3-2">
+<p>
+Is this publication based on this thesis?:
+<a href="https://scholarcommons.sc.edu/cgi/viewcontent.cgi?article=5510&amp;context=etd">https://scholarcommons.sc.edu/cgi/viewcontent.cgi?article=5510&amp;context=etd</a>
+</p>
+
+<div class="org-src-container">
+<pre class="src src-bibtex"><span style="color: #5cEfFF;">@ARTICLE</span>{<span style="color: #a991f1;">Meng:TC:2019</span>,
+  <span style="color: #dcafe9;">author</span> =       {Meng, Zibo and Han, Shizhong and Liu, Ping and Tong,
+                  Yan},
+  <span style="color: #dcafe9;">journal</span> =      {IEEE Transactions on Cybernetics},
+  <span style="color: #dcafe9;">title</span> =        {Improving Speech Related Facial Action Unit
+                  Recognition by Audiovisual Information Fusion},
+  <span style="color: #dcafe9;">year</span> =         {2019},
+  <span style="color: #dcafe9;">volume</span> =       {49},
+  <span style="color: #dcafe9;">number</span> =       {9},
+  <span style="color: #dcafe9;">pages</span> =        {3293-3306},
+  <span style="color: #dcafe9;">abstract</span> =     {It is challenging to recognize facial action unit
+                  (AU) from spontaneous facial displays, especially
+                  when they are accompanied by speech. The major
+                  reason is that the information is extracted from a
+                  single source, i.e., the visual channel, in the
+                  current practice. However, facial activity is highly
+                  correlated with voice in natural human
+                  communications. Instead of solely improving visual
+                  observations, this paper presents a novel
+                  audiovisual fusion framework, which makes the best
+                  use of visual and acoustic cues in recognizing
+                  speech-related facial AUs. In particular, a dynamic
+                  Bayesian network is employed to explicitly model the
+                  semantic and dynamic physiological relationships
+                  between AUs and phonemes as well as measurement
+                  uncertainty. Experiments on a pilot audiovisual
+                  AU-coded database have demonstrated that the
+                  proposed framework significantly outperforms the
+                  state-of-the-art visual-based methods in terms of
+                  recognizing speech-related AUs, especially for those
+                  AUs whose visual observations are impaired during
+                  speech, and more importantly is also superior to
+                  audio-based methods and feature-level fusion
+                  methods, which employ low-level audio features, by
+                  explicitly modeling and exploiting physiological
+                  relationships between AUs and phonemes.},
+  <span style="color: #dcafe9;">keywords</span> =     {},
+  <span style="color: #dcafe9;">doi</span> =          {<span style="color: #51afef; font-weight: bold; text-decoration: underline;">10.1109/TCYB.2018.2840090</span>},
+  <span style="color: #dcafe9;">ISSN</span> =         {2168-2275},
+  <span style="color: #dcafe9;">month</span> =        {Sep.},
+}
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-orgd58d4ca" class="outline-3">
+<h3 id="orgd58d4ca"><span class="section-number-3">3.3.</span> Face reading from speech—predicting facial action units from audio cues</h3>
+<div class="outline-text-3" id="text-3-3">
+<div class="org-src-container">
+<pre class="src src-bibtex"><span style="color: #5cEfFF;">@inproceedings</span>{<span style="color: #a991f1;">Ringeval:CISCA:2015</span>,
+  <span style="color: #dcafe9;">title</span> =        {Face reading from speech&#8212;predicting facial action
+                  units from audio cues},
+  <span style="color: #dcafe9;">author</span> =       {Ringeval, Fabien and Marchi, Erik and Mehu, Marc and
+                  Scherer, Klaus and Schuller, Bj{\"o}rn},
+  <span style="color: #dcafe9;">booktitle</span> =    {Sixteenth Annual Conference of the International
+                  Speech Communication Association},
+  <span style="color: #dcafe9;">abstract</span> =     {The automatic recognition of facial behaviours is
+                  usually achieved through the detection of particular
+                  FACS Action Unit (AU), which then makes it possible
+                  to analyse the affective be- haviours expressed in
+                  the face. Despite the fact that advanced techniques
+                  have been proposed to extract relevant facial
+                  descrip- tors, the processing of real-life data,
+                  i. e., recorded in uncon- strained environments,
+                  makes the automatic detection of FACS AU much more
+                  challenging compared to constrained record- ings,
+                  such as posed faces, and even impossible when the
+                  corre- sponding parts of the face are masked or
+                  subject to low or no illumination. We present in
+                  this paper the very first attempt in using acoustic
+                  cues for the automatic detection of FACS AU, as an
+                  alternative way to obtain information from the face
+                  when such data are not available. Results show that
+                  features extracted from the voice can be effectively
+                  used to predict different types of FACS AU, and that
+                  the best performance are obtained for the prediction
+                  of the apex, in comparison to the prediction of
+                  onset, offset and occurrence.},
+  <span style="color: #dcafe9;">year</span> =         {2015}
+}
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org417830c" class="outline-3">
+<h3 id="org417830c"><span class="section-number-3">3.4.</span> FACSvatar</h3>
+<div class="outline-text-3" id="text-3-4">
+<div class="org-src-container">
+<pre class="src src-bibtex"><span style="color: #5cEfFF;">@inproceedings</span>{<span style="color: #a991f1;">Struijk:ICIVA:2018</span>,
+  <span style="color: #dcafe9;">author</span> =       {van der Struijk, Stef and Huang, Hung-Hsuan and
+                  Mirzaei, Maryam Sadat and Nishida, Toyoaki},
+  <span style="color: #dcafe9;">title</span> =        {FACSvatar: An Open Source Modular Framework for
+                  Real-Time FACS Based Facial Animation},
+  <span style="color: #dcafe9;">year</span> =         {2018},
+  <span style="color: #dcafe9;">isbn</span> =         {9781450360135},
+  <span style="color: #dcafe9;">publisher</span> =    {Association for Computing Machinery},
+  <span style="color: #dcafe9;">address</span> =      {New York, NY, USA},
+  <span style="color: #dcafe9;">url</span> =          {<span style="color: #51afef; font-weight: bold; text-decoration: underline;">https://doi.org/10.1145/3267851.3267918</span>},
+  <span style="color: #dcafe9;">doi</span> =          {<span style="color: #51afef; font-weight: bold; text-decoration: underline;">10.1145/3267851.3267918</span>},
+  <span style="color: #dcafe9;">abstract</span> =     {Embodied Conversational Agents often employ advanced
+                  multimodal analysis of human users for affective
+                  inference, however, its facial expressions in
+                  response are often pre-made or coded
+                  animations. Generated data-driven facial animations
+                  have the advantage that they can be more natural and
+                  do not require a database at run-time. The open
+                  source modular framework FACSvatar is presented,
+                  which processes and animates FACS based data in
+                  real-time. Tools that create 3D human models are
+                  supported and facial data can be visualized in
+                  popular tools in the gaming industry. All
+                  functionality is split-up into modules set-up in a
+                  publisher-subscriber pattern to provide easy
+                  integration with other platforms. A deep learning
+                  module for real-time generation of AU data for
+                  data-driven animation is implemented. A user
+                  evaluation of their expressions being animated
+                  through our framework was done. Their ratings were
+                  slightly positive, but more improvements have to be
+                  made in terms of data quality and individual
+                  fine-tuning. Also, the modules' latency and
+                  performance have been measured. On average, FACS
+                  data is visualized in 28.55 ms.},
+  <span style="color: #dcafe9;">booktitle</span> =    {Proceedings of the 18th International Conference on
+                  Intelligent Virtual Agents},
+  <span style="color: #dcafe9;">pages</span> =        {159&#8211;164},
+  <span style="color: #dcafe9;">numpages</span> =     {6},
+  <span style="color: #dcafe9;">keywords</span> =     {Animation Generation, Facial Expression, FACS,
+                  Virtual Human},
+  <span style="color: #dcafe9;">location</span> =     {Sydney, NSW, Australia},
+  <span style="color: #dcafe9;">series</span> =       {IVA '18}
+}
+</pre>
+</div>
+
+<p>
+Website: <a href="https://facsvatar.readthedocs.io/en/latest/index.html">https://facsvatar.readthedocs.io/en/latest/index.html</a>
+Git repository: <a href="https://github.com/NumesSanguis/FACSvatar">https://github.com/NumesSanguis/FACSvatar</a>
+</p>
+
+<p>
+Notes:
+</p>
+<ul class="org-ul">
+<li><a href="https://www.reddit.com/r/FACSvatar/comments/bxflrr/comment/etnhyew/?context=3">[Unity] How to get the facial data to stream to the model?</a></li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-orgf79422f" class="outline-3">
+<h3 id="orgf79422f"><span class="section-number-3">3.5.</span> FACSHuman</h3>
+<div class="outline-text-3" id="text-3-5">
+<div class="org-src-container">
+<pre class="src src-bibtex"><span style="color: #5cEfFF;">@inproceedings</span>{<span style="color: #a991f1;">Gilbert:ICIVA:2018</span>,
+  <span style="color: #dcafe9;">author</span> =       {Gilbert, Micha\"{e}l and Demarchi, Samuel and
+                  Urdapilleta, Isabel},
+  <span style="color: #dcafe9;">title</span> =        {FACSHuman a Software to Create Experimental Material
+                  by Modeling 3D Facial Expression},
+  <span style="color: #dcafe9;">year</span> =         {2018},
+  <span style="color: #dcafe9;">isbn</span> =         {9781450360135},
+  <span style="color: #dcafe9;">publisher</span> =    {Association for Computing Machinery},
+  <span style="color: #dcafe9;">address</span> =      {New York, NY, USA},
+  <span style="color: #dcafe9;">url</span> =          {<span style="color: #51afef; font-weight: bold; text-decoration: underline;">https://doi.org/10.1145/3267851.3267865</span>},
+  <span style="color: #dcafe9;">doi</span> =          {<span style="color: #51afef; font-weight: bold; text-decoration: underline;">10.1145/3267851.3267865</span>},
+  <span style="color: #dcafe9;">abstract</span> =     {FACSHuman is a software that allows researchers to
+                  create, through three-dimensional modeling,
+                  experimental material that can be used in nonverbal
+                  communication and emotional facial expressions
+                  researches. It thus offers the possibility of
+                  practically manipulating all the Action Units
+                  presented in the Facial Action Coding System[6]. But
+                  also, the morphological parameters of the entire
+                  body and face.},
+  <span style="color: #dcafe9;">booktitle</span> =    {Proceedings of the 18th International Conference on
+                  Intelligent Virtual Agents},
+  <span style="color: #dcafe9;">pages</span> =        {333&#8211;334},
+  <span style="color: #dcafe9;">numpages</span> =     {2},
+  <span style="color: #dcafe9;">keywords</span> =     {Facial Action Coding System, Non verbal
+                  communication, Emotion, Facial Expressions, Avatars},
+  <span style="color: #dcafe9;">location</span> =     {Sydney, NSW, Australia},
+  <span style="color: #dcafe9;">series</span> =       {IVA '18}
+}
+</pre>
+</div>
+
+<p>
+Website: <a href="https://www.michaelgilbert.fr/facshuman/">https://www.michaelgilbert.fr/facshuman/</a>
+Git repository: <a href="https://github.com/montybot/FACSHuman">https://github.com/montybot/FACSHuman</a>
+</p>
+</div>
+</div>
+
+<div id="outline-container-orgc10c3de" class="outline-3">
+<h3 id="orgc10c3de"><span class="section-number-3">3.6.</span> The computer expression recognition toolbox (CERT)</h3>
+<div class="outline-text-3" id="text-3-6">
+<div class="org-src-container">
+<pre class="src src-bibtex"><span style="color: #5cEfFF;">@INPROCEEDINGS</span>{<span style="color: #a991f1;">Littlewort:ICAFGR:2011</span>,
+  <span style="color: #dcafe9;">author</span> =       {Littlewort, Gwen and Whitehill, Jacob and Wu,
+                  Tingfan and Fasel, Ian and Frank, Mark and Movellan,
+                  Javier and Bartlett, Marian},
+  <span style="color: #dcafe9;">booktitle</span> =    {2011 IEEE International Conference on Automatic Face
+                  &amp; Gesture Recognition (FG)},
+  <span style="color: #dcafe9;">title</span> =        {The computer expression recognition toolbox (CERT)},
+  <span style="color: #dcafe9;">year</span> =         {2011},
+  <span style="color: #dcafe9;">volume</span> =       {},
+  <span style="color: #dcafe9;">number</span> =       {},
+  <span style="color: #dcafe9;">pages</span> =        {298-305},
+  <span style="color: #dcafe9;">abstract</span> =     {We present the Computer Expression Recognition
+                  Toolbox (CERT), a software tool for fully automatic
+                  real-time facial expression recognition, and
+                  officially release it for free academic use. CERT
+                  can automatically code the intensity of 19 different
+                  facial actions from the Facial Action Unit Coding
+                  System (FACS) and 6 different prototypical facial
+                  expressions. It also estimates the locations of 10
+                  facial features as well as the 3-D orientation (yaw,
+                  pitch, roll) of the head. On a database of posed
+                  facial expressions, Extended Cohn-Kanade (CK+[1]),
+                  CERT achieves an average recognition performance
+                  (probability of correctness on a two-alternative
+                  forced choice (2AFC) task between one positive and
+                  one negative example) of 90.1<span style="color: #62686E;">% when analyzing facial</span>
+                  actions. On a spontaneous facial expression dataset,
+                  CERT achieves an accuracy of nearly 80<span style="color: #62686E;">%. In a</span>
+                  standard dual core laptop, CERT can process 320 &#215;
+                  240 video images in real time at approximately 10
+                  frames per second.},
+  <span style="color: #dcafe9;">keywords</span> =     {},
+  <span style="color: #dcafe9;">doi</span> =          {<span style="color: #51afef; font-weight: bold; text-decoration: underline;">10.1109/FG.2011.5771414</span>},
+  <span style="color: #dcafe9;">ISSN</span> =         {},
+  <span style="color: #dcafe9;">month</span> =        {March},
+}
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org84db2ad" class="outline-3">
+<h3 id="org84db2ad"><span class="section-number-3">3.7.</span> Opensmile: the munich versatile and fast open-source audio feature extractor</h3>
+<div class="outline-text-3" id="text-3-7">
+<div class="org-src-container">
+<pre class="src src-bibtex"><span style="color: #5cEfFF;">@inproceedings</span>{<span style="color: #a991f1;">Eyben:ICM:2010</span>,
+  <span style="color: #dcafe9;">author</span> =       {Eyben, Florian and W\"{o}llmer, Martin and Schuller,
+                  Bj\"{o}rn},
+  <span style="color: #dcafe9;">title</span> =        {Opensmile: The Munich Versatile and Fast Open-Source
+                  Audio Feature Extractor},
+  <span style="color: #dcafe9;">year</span> =         {2010},
+  <span style="color: #dcafe9;">isbn</span> =         {9781605589336},
+  <span style="color: #dcafe9;">publisher</span> =    {Association for Computing Machinery},
+  <span style="color: #dcafe9;">address</span> =      {New York, NY, USA},
+  <span style="color: #dcafe9;">url</span> =          {<span style="color: #51afef; font-weight: bold; text-decoration: underline;">https://doi.org/10.1145/1873951.1874246</span>},
+  <span style="color: #dcafe9;">doi</span> =          {<span style="color: #51afef; font-weight: bold; text-decoration: underline;">10.1145/1873951.1874246</span>},
+  <span style="color: #dcafe9;">abstract</span> =     {We introduce the openSMILE feature extraction
+                  toolkit, which unites feature extraction algorithms
+                  from the speech processing and the Music Information
+                  Retrieval communities. Audio low-level descriptors
+                  such as CHROMA and CENS features, loudness,
+                  Mel-frequency cepstral coefficients, perceptual
+                  linear predictive cepstral coefficients, linear
+                  predictive coefficients, line spectral frequencies,
+                  fundamental frequency, and formant frequencies are
+                  supported. Delta regression and various statistical
+                  functionals can be applied to the low-level
+                  descriptors. openSMILE is implemented in C++ with no
+                  third-party dependencies for the core
+                  functionality. It is fast, runs on Unix and Windows
+                  platforms, and has a modular, component based
+                  architecture which makes extensions via plug-ins
+                  easy. It supports on-line incremental processing for
+                  all implemented features as well as off-line and
+                  batch processing. Numeric compatibility with future
+                  versions is ensured by means of unit
+                  tests. openSMILE can be downloaded from
+                  http://opensmile.sourceforge.net/.},
+  <span style="color: #dcafe9;">booktitle</span> =    {Proceedings of the 18th ACM International Conference
+                  on Multimedia},
+  <span style="color: #dcafe9;">pages</span> =        {1459&#8211;1462},
+  <span style="color: #dcafe9;">numpages</span> =     {4},
+  <span style="color: #dcafe9;">keywords</span> =     {signal processing, speech, audio feature extraction,
+                  music, emotion, statistical functionals},
+  <span style="color: #dcafe9;">location</span> =     {Firenze, Italy},
+  <span style="color: #dcafe9;">series</span> =       {MM '10}
+}
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<p class="author">Author: Marcel Steinbeck</p>
+<p class="date">Created: 2023-02-06 Mon 10:02</p>
+<p class="validation"><a href="https://validator.w3.org/check?uri=referer">Validate</a></p>
+</div>
+</body>
+</html>

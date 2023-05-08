@@ -1,0 +1,11 @@
+Input:C:\Users\Abhi\Desktop\acads\5-2_Thesis\repos\Thesis_repos\Bachelor_Thesis\Demonstration\Videos\MBIO_JEVM392_au12_CamD.mp4
+Input full path:C:\Users\Abhi\Desktop\acads\5-2_Thesis\repos\Thesis_repos\Bachelor_Thesis\Demonstration\Videos\MBIO_JEVM392_au12_CamD.mp4
+Camera parameters:300,300,192,144
+Output video:MBIO_JEVM392_au12_CamD.avi
+Output csv:MBIO_JEVM392_au12_CamD.csv
+Gaze: 1
+AUs: 1
+Landmarks 2D: 1
+Landmarks 3D: 1
+Pose: 1
+Shape parameters: 1

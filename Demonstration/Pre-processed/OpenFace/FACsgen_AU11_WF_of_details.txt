@@ -1,0 +1,11 @@
+Input:C:\Users\Abhi\Desktop\acads\5-2_Thesis\repos\Thesis_repos\Bachelor_Thesis\Demonstration\Videos\FACsgen_AU11_WF.mp4
+Input full path:C:\Users\Abhi\Desktop\acads\5-2_Thesis\repos\Thesis_repos\Bachelor_Thesis\Demonstration\Videos\FACsgen_AU11_WF.mp4
+Camera parameters:755.208,755.208,300,500
+Output video:FACsgen_AU11_WF.avi
+Output csv:FACsgen_AU11_WF.csv
+Gaze: 1
+AUs: 1
+Landmarks 2D: 1
+Landmarks 3D: 1
+Pose: 1
+Shape parameters: 1
