@@ -18,7 +18,7 @@ Instructions = """  Please press Ok after you have read the Instructions
 
 3. Once you feel confident with your expression please press  the record button. 
  
-4. You will be  immediately be shown your  webcam feed. Please  mimic the expression.
+4. You should be  immediately be shown your  webcam feed next. Please  mimic the expression now.
 
 7. Once you reach the peak expression intensity , click the middle mouse button, the recording will begin now.
 
@@ -37,7 +37,7 @@ Please press Ok after you have read the Instructions
 
 3. Once you feel confident with your expression please press  the next button. 
 
-4. Now you wil be shown the next stimuli video.
+4. Now you should be shown the next stimuli video.
 
 5. You can practice all expressions by going through all the stimulus videos.
 '''
